@@ -1,236 +1,155 @@
-# Wobb Influencer Search
+ye pahle wala readme hai # Wobb Frontend Assignment
 
-A modern influencer search application built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**.
-
-This project was completed as part of the **Wobb Frontend Assignment**. The application allows users to search influencers, view profile details, and save profiles to a persistent list while following React best practices and performance optimizations.
+A starter influencer search application built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**. This project is intentionally left in a rough-but-working state for candidates to improve.
 
 ---
 
-## 🚀 Live Demo
+# 🚀 My Implementation
 
-**Live Application:**  
-https://your-live-app-url.vercel.app
+## Live Demo
 
-**GitHub Repository:**  
-https://github.com/your-username/your-repository
+https://your-app.vercel.app
 
----
+## GitHub Repository
 
-# ✨ Features
-
-### 🔍 Search & Filter
-
-- Search influencers by username or full name
-- Filter influencers by:
-  - Instagram
-  - YouTube
-  - TikTok
-
-### 👤 Profile Details
-
-- Detailed influencer profile page
-- Handles unavailable profiles gracefully
-- Responsive UI
-
-### 📌 Saved Profiles
-
-- Add profiles to saved list
-- Prevent duplicate entries
-- Remove saved profiles
-- Data persists using Local Storage
-- Dedicated Saved Profiles page
+https://github.com/harry7705/vibe-coder-assignment
 
 ---
 
-# 🛠️ Improvements Made
+## What I Changed
 
-## Bug Fixes
+### Functionality
+- Implemented complete Add to List functionality
+- Added Saved Profiles page
+- Prevented duplicate entries
+- Added Remove from List
+- Persisted saved profiles using Local Storage
+- Prevented unavailable profiles from being opened or saved
 
-- Fixed broken profile navigation
-- Prevented opening unavailable profiles
-- Prevented invalid profiles from being saved
-- Fixed duplicate profile issue
-- Improved routing behavior
+### Code Quality
+- Refactored project structure
+- Created reusable components
+- Added reusable utility functions
+- Added custom hook (`useSavedProfiles`)
+- Improved TypeScript typing
+- Followed React best practices
 
----
-
-## Code Quality
-
-Refactored the project for better maintainability.
-
-### Better Folder Structure
-
-```
-src/
-├── assets/
-├── components/
-├── constants/
-├── hooks/
-├── pages/
-├── services/
-├── storage/
-├── utils/
-└── types/
-```
-
-### Reusable Components
-
-- AddToListButton
-- Loading
-- EmptyState
-- Layout
-- ProfileCard
-- ProfileList
-- VerifiedBadge
-
-### Custom Hook
-
-- useSavedProfiles
-
-### Utility Functions
-
-- formatFollowers()
-- formatEngagementRate()
-
-### Constants
-
-- storage.ts
+### Performance
+- React.memo
+- useMemo
+- useCallback
+- React.lazy + Suspense
+- Promise.all for loading saved profiles
+- Lazy loading for images
 
 ---
 
-# ⚡ Performance Optimizations
+## Libraries Added
 
-Implemented several React optimization techniques.
+No additional production libraries were added.
 
-### Rendering
-
-- React.memo()
-- useMemo()
-- useCallback()
-
-### Code Splitting
-
-- React.lazy()
-- Suspense
-
-### Data Loading
-
-- Promise.all()
-
-### Images
-
-- Lazy loading
-- Async image decoding
+The project intentionally uses React's built-in optimization APIs to keep dependencies minimal.
 
 ---
 
-# 📦 Tech Stack
-
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- React Router
-
----
-
-# 📚 Libraries Used
-
-- React
-- React Router
-- Tailwind CSS
-- TypeScript
-- Vite
-
-No additional production libraries were added. The project intentionally relies on React's built-in optimization APIs to keep the dependency footprint minimal.
-
----
-
-# 📝 Assumptions
+## Assumptions
 
 - Every valid profile has a corresponding detail JSON file.
-- Profiles without a detail JSON are considered unavailable.
-- Local Storage is available in the browser.
-- Static JSON files are used as the application's data source.
+- Profiles without a detail JSON are unavailable.
+- Local Storage is available for persistence.
 
 ---
 
-# ⚖️ Trade-offs
+## Trade-offs
 
-- Used Local Storage instead of backend persistence.
-- Kept state management lightweight without introducing additional dependencies.
-- Used browser alerts for unavailable profiles to avoid adding notification libraries that conflicted with the provided project setup.
+- Used Local Storage instead of a backend because server-side persistence was outside the assignment scope.
+- Used React built-in optimizations instead of introducing additional libraries.
+- Used browser alerts for unavailable profiles due to dependency compatibility with the provided project setup.
 
 ---
 
-# 🚀 Future Improvements
-
-Given more time, I would add:
+## Remaining Improvements
 
 - Toast notifications
-- Unit testing (Vitest)
-- React Testing Library
-- End-to-end testing
+- Unit & integration tests
 - Better accessibility
 - Skeleton loading
-- Infinite scrolling
 - Backend API integration
-- Dark mode
-- Better animations
+- Animations
 
----
-
-# ▶️ Getting Started
-
-Clone the repository
-
-```bash
-git clone https://github.com/your-username/your-repository.git
-```
-
-Install dependencies
+## Getting Started
 
 ```bash
 npm install
-```
-
-Run development server
-
-```bash
 npm run dev
 ```
 
-Build production
+Open [http://localhost:5173](http://localhost:5173) to view the app.
 
-```bash
-npm run build
-```
+## What's Included
 
-Run ESLint
+- **Search / Dashboard** — filter influencers by platform (Instagram, YouTube, TikTok) and search by username or full name
+- **Profile Details** — click a profile to view extended data loaded from individual JSON files
+- **Routing** — `react-router-dom` with `/` (search) and `/profile/:username` (details)
 
-```bash
-npm run lint
-```
+Sample data lives in:
 
----
+- `src/assets/data/search/` — platform search results (10 profiles each)
+- `src/assets/data/profiles/` — detailed profile JSON per username
 
-# ✅ Assignment Checklist
+## How to Submit
 
-- ✔ Fixed bugs and quality issues
-- ✔ Improved UI structure
-- ✔ Implemented Add to List
-- ✔ Prevented duplicate entries
-- ✔ Persistent Local Storage
-- ✔ Saved Profiles page
-- ✔ Improved project structure
-- ✔ React best practices
-- ✔ Performance optimizations
-- ✔ Clean TypeScript implementation
+1. **Download or clone** this starter project to your machine.
+2. **Create a new repository** on your own GitHub account. Do not fork the original assignment repo — push your work to a repo you own.
+3. Complete the tasks below and push your changes to that repository.
+4. **Share the public GitHub repository URL** with us as your submission.
 
----
+### Deadline (strict)
 
-## 👨‍💻 Author
+- **Due:** **2 July 2026, 2:00 PM IST** (Indian Standard Time, UTC+5:30)
+- **Any git commits made after this deadline will disqualify your submission.** We will only consider the repository state as of the deadline; late commits will not be reviewed.
+- Make sure your final work is pushed **before** the cutoff.
 
-**Himanshu Kumar**
+## AI Usage
 
-GitHub: https://github.com/harry7705
+You may use any AI tools (Cursor, ChatGPT, Claude, GitHub Copilot, etc.). We are evaluating your final solution and engineering decisions.
+
+## Your Tasks
+
+Complete the following as part of your submission:
+
+1. **Find and fix all bugs and quality issues** — the codebase contains intentional bugs and quality issues. Identify and resolve them.
+
+2. **Completely redesign the UI/UX** — replace the basic layout with a polished, modern interface. Focus on usability, visual hierarchy, and delight.
+
+3. **Replace React Context with Zustand** — when you implement state management for the selected list, use [Zustand](https://github.com/pmndrs/zustand) instead of React Context.
+
+4. **Implement "Select profile & Add to List"** — the disabled "Add to List" button is a stub. Build the full feature:
+   - Select / add profiles to a persistent list
+   - View and manage the selected list
+   - Handle duplicates appropriately
+
+5. **Improve code quality and project structure** — refactor as needed, add proper types, and follow React best practices.
+
+6. **Optimize performance** — apply sensible optimizations where appropriate.
+
+7. **Use any libraries you need** — you are not limited to the current stack. Choose tools that help you deliver a great result (UI kits, state managers, testing libraries, etc.).
+
+## Scripts
+
+| Command        | Description              |
+| -------------- | ------------------------ |
+| `npm run dev`  | Start development server |
+| `npm run build`| Production build         |
+| `npm run lint` | Run ESLint               |
+
+## Submission Notes
+
+- Document any assumptions or trade-offs in your README
+- Ensure `npm run build` passes before submitting
+- Focus on demonstrating your judgment — not every possible feature needs to be built, but the core assignment items should be addressed thoughtfully
+- Double-check that your repo is public (or that we have access) and that the link is included in your submission
+- Please make meaningful commits throughout your work. We may review your commit history.
+- **Bonus:** Deploying the app (e.g. Vercel, Netlify, GitHub Pages) is optional but will be considered a plus — include the live URL in your submission if you do
+
+Good luck!
