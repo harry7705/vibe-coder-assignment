@@ -20,10 +20,15 @@ export function AddToListButton({
   return (
     <button
       onClick={handleSave}
-      className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium shadow-sm transition-colors ${
+      aria-label={
         saved
-          ? "bg-green-600 text-white hover:bg-green-700"
-          : "bg-blue-600 text-white hover:bg-blue-700"
+          ? "Remove profile from saved list"
+          : "Add profile to saved list"
+      }
+      className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium shadow-sm transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+        saved
+          ? "bg-green-600 text-white hover:bg-green-700 focus:ring-green-500"
+          : "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500"
       }`}
     >
       {saved ? (

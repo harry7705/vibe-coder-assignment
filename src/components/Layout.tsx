@@ -1,5 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+
 import { getSavedProfiles } from "@/storage/listStorage";
 
 interface LayoutProps {
@@ -7,7 +9,10 @@ interface LayoutProps {
   title?: string;
 }
 
-export function Layout({ children, title }: LayoutProps) {
+export function Layout({
+  children,
+  title,
+}: LayoutProps) {
   const [savedCount, setSavedCount] = useState(
     getSavedProfiles().length
   );
@@ -17,11 +22,12 @@ export function Layout({ children, title }: LayoutProps) {
       setSavedCount(getSavedProfiles().length);
     };
 
-    // Initial update
     updateCount();
 
-    // Listen for add/remove events
-    window.addEventListener("savedProfilesUpdated", updateCount);
+    window.addEventListener(
+      "savedProfilesUpdated",
+      updateCount
+    );
 
     return () => {
       window.removeEventListener(
@@ -32,12 +38,17 @@ export function Layout({ children, title }: LayoutProps) {
   }, []);
 
   return (
-    <div className="p-4 min-h-screen">
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="p-4 min-h-screen"
+    >
       <header className="mb-6 border-b pb-4 flex items-center justify-between">
         <div>
           <Link
             to="/"
-            className="text-xl font-semibold text-gray-900"
+            className="text-xl font-semibold text-gray-900 transition-colors duration-200 hover:text-blue-600"
           >
             Influencer Search
           </Link>
@@ -47,15 +58,20 @@ export function Layout({ children, title }: LayoutProps) {
           )}
         </div>
 
-        <Link
-          to="/saved"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          Saved ({savedCount})
-        </Link>
+          <Link
+            to="/saved"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-200"
+          >
+            Saved ({savedCount})
+          </Link>
+        </motion.div>
       </header>
 
       <main>{children}</main>
-    </div>
+    </motion.div>
   );
 }

@@ -44,18 +44,18 @@ export const ProfileCard = memo(function ProfileCard({
   return (
     <div
       onClick={handleClick}
-      className="flex items-center gap-3 p-3 mb-2 w-full max-w-2xl cursor-pointer rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+      className="group mb-2 flex w-full max-w-2xl cursor-pointer items-center gap-3 rounded-lg border border-gray-300 p-3 transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:bg-gray-50 hover:shadow-lg"
     >
       <img
         src={profile.picture}
-        alt={profile.username}
+        alt={`${profile.fullname} profile`}
         loading="lazy"
         decoding="async"
-        className="w-12 h-12 rounded-full"
+        className="h-12 w-12 rounded-full object-cover transition-transform duration-300 group-hover:scale-110"
       />
 
       <div className="flex-1 text-left">
-        <div className="flex items-center gap-1 font-bold">
+        <div className="flex items-center gap-1 font-bold transition-colors duration-200 group-hover:text-blue-600">
           @{profile.username}
           <VerifiedBadge verified={profile.is_verified} />
         </div>
@@ -69,9 +69,11 @@ export const ProfileCard = memo(function ProfileCard({
         </div>
       </div>
 
-      <AddToListButton
-        username={profile.username}
-      />
+      <div className="transition-transform duration-200 group-hover:scale-105">
+        <AddToListButton
+          username={profile.username}
+        />
+      </div>
     </div>
   );
 });
