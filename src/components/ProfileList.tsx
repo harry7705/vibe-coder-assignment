@@ -1,31 +1,43 @@
-import type { Platform, UserProfileSummary } from "@/types";
+import { memo } from "react";
+
+import type {
+  Platform,
+  UserProfileSummary,
+} from "@/types";
+
 import { ProfileCard } from "./ProfileCard";
+import { EmptyState } from "./EmptyState";
 
 interface ProfileListProps {
   profiles: UserProfileSummary[];
   platform: Platform;
-  searchQuery: string;
   onProfileClick: (username: string) => void;
 }
 
-export function ProfileList({
+export const ProfileList = memo(function ProfileList({
   profiles,
   platform,
-  searchQuery,
   onProfileClick,
 }: ProfileListProps) {
+  if (profiles.length === 0) {
+    return (
+      <EmptyState
+        title="No Profiles Found"
+        description="Try changing the search query or platform."
+      />
+    );
+  }
+
   return (
     <div className="flex flex-col items-center">
-      {profiles.length === 0 && <p>No profiles found</p>}
       {profiles.map((profile) => (
         <ProfileCard
           key={profile.user_id}
           profile={profile}
           platform={platform}
-          searchQuery={searchQuery}
           onProfileClick={onProfileClick}
         />
       ))}
     </div>
   );
-}
+});

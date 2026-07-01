@@ -1,48 +1,71 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import { Layout } from "@/components/Layout";
-import { VerifiedBadge } from "@/components/VerifiedBadge";
-import type { FullUserProfile, ProfileDetailResponse } from "@/types";
-import { formatEngagementRate } from "@/utils/formatters";
-import { loadProfileByUsername } from "@/utils/profileLoader";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 
-function formatFollowersDetail(count: number) {
-  if (count >= 1000000) return (count / 1000000).toFixed(2) + "M";
-  if (count >= 1000) return (count / 1000).toFixed(1) + "K";
-  return String(count);
-}
+import { Layout } from "@/components/Layout";
+import { Loading } from "@/components/Loading";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { AddToListButton } from "@/components/AddToListButton";
+
+import type {
+  FullUserProfile,
+  ProfileDetailResponse,
+} from "@/types";
+
+import {
+  formatFollowers,
+  formatEngagementRate,
+} from "@/utils/formatters";
+
+import { loadProfileByUsername } from "@/services/profileLoader";
 
 export function ProfileDetailPage() {
   const { username } = useParams<{ username: string }>();
   const [searchParams] = useSearchParams();
-  const platform = searchParams.get("platform") || "unknown";
-  const [profileData, setProfileData] = useState<ProfileDetailResponse | null>(
-    null
-  );
-  const [loaded, setLoaded] = useState(false);
+
+  const platform = searchParams.get("platform") || "Unknown";
+
+  const [profileData, setProfileData] =
+    useState<ProfileDetailResponse | null>(null);
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!username) return;
+    async function fetchProfile() {
+      if (!username) {
+        setLoading(false);
+        return;
+      }
 
-    loadProfileByUsername(username).then((data) => {
+      const data = await loadProfileByUsername(username);
+
       setProfileData(data);
-      setLoaded(true);
-    });
+      setLoading(false);
+    }
+
+    fetchProfile();
   }, [username]);
 
   if (!username) {
     return (
       <Layout>
-        <p>Invalid profile</p>
-        <Link to="/">Back</Link>
+        <p>Invalid profile.</p>
+
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-blue-600 hover:underline"
+        >
+          <ArrowLeft size={16} />
+          Back
+        </Link>
       </Layout>
     );
   }
 
-  if (!loaded) {
+  if (loading) {
     return (
       <Layout title={`@${username}`}>
-        <p className="text-gray-400">Loading...</p>
+        <Loading />
       </Layout>
     );
   }
@@ -50,91 +73,110 @@ export function ProfileDetailPage() {
   if (!profileData) {
     return (
       <Layout title={`@${username}`}>
-        <p className="text-red-600 mb-4">
-          Could not load profile details for {username}
+        <p className="mb-4 text-red-600">
+          Could not load profile details for @{username}
         </p>
-        <Link to="/" className="text-blue-600 underline">
-          Back to search
+
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-blue-600 hover:underline"
+        >
+          <ArrowLeft size={16} />
+          Back to Search
         </Link>
       </Layout>
     );
   }
 
-  const user: FullUserProfile = profileData.data.user_profile;
+  const user: FullUserProfile =
+    profileData.data.user_profile;
 
   return (
     <Layout title={user.fullname}>
-      <Link to="/" className="text-sm text-blue-600 mb-4 inline-block">
-        ← Back to search
+      <Link
+        to="/"
+        className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-blue-600 transition-colors hover:text-blue-700"
+      >
+        <ArrowLeft size={16} />
+        Back to Search
       </Link>
 
-      <div className="flex gap-6 items-start text-left max-w-2xl mx-auto">
+      <div className="mx-auto flex max-w-2xl items-start gap-6">
         <img
           src={user.picture}
-          className="w-24 h-24 rounded-full border"
+          alt={user.username}
+          loading="lazy"
+          decoding="async"
+          className="h-24 w-24 rounded-full border object-cover"
         />
+
         <div className="flex-1">
-          <h2 className="text-xl font-bold">
+          <h2 className="flex items-center gap-2 text-xl font-bold">
             @{user.username}
             <VerifiedBadge verified={user.is_verified} />
           </h2>
-          <p className="text-gray-600">{user.fullname}</p>
-          <p className="text-xs text-gray-400 mt-1">Platform: {platform}</p>
+
+          <p className="text-gray-600">
+            {user.fullname}
+          </p>
+
+          <p className="mt-1 text-xs text-gray-400">
+            Platform: {platform}
+          </p>
 
           {user.description && (
-            <p className="mt-3 text-sm text-gray-700">{user.description}</p>
+            <p className="mt-3 text-sm text-gray-700">
+              {user.description}
+            </p>
           )}
 
           <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-            <div className="border p-2 rounded">
-              <div className="text-gray-500">Followers</div>
-              <div className="font-semibold">
-                {formatFollowersDetail(user.followers)}
-              </div>
-            </div>
-            <div className="border p-2 rounded">
-              <div className="text-gray-500">Engagement Rate</div>
-              <div className="font-semibold">
-                {user.engagement_rate !== undefined
-                  ? (user.engagement_rate * 10000).toFixed(2) + "%"
-                  : "N/A"}
-              </div>
-            </div>
+            <InfoCard
+              title="Followers"
+              value={formatFollowers(user.followers)}
+            />
+
+            <InfoCard
+              title="Engagement Rate"
+              value={formatEngagementRate(
+                user.engagement_rate
+              )}
+            />
+
             {user.posts_count !== undefined && (
-              <div className="border p-2 rounded">
-                <div className="text-gray-500">Posts</div>
-                <div className="font-semibold">{user.posts_count}</div>
-              </div>
+              <InfoCard
+                title="Posts"
+                value={user.posts_count}
+              />
             )}
+
             {user.avg_likes !== undefined && (
-              <div className="border p-2 rounded">
-                <div className="text-gray-500">Avg Likes</div>
-                <div className="font-semibold">
-                  {formatFollowersDetail(user.avg_likes)}
-                </div>
-              </div>
+              <InfoCard
+                title="Avg Likes"
+                value={formatFollowers(user.avg_likes)}
+              />
             )}
+
             {user.avg_comments !== undefined && (
-              <div className="border p-2 rounded">
-                <div className="text-gray-500">Avg Comments</div>
-                <div className="font-semibold">{user.avg_comments}</div>
-              </div>
+              <InfoCard
+                title="Avg Comments"
+                value={user.avg_comments}
+              />
             )}
-            {user.avg_views !== undefined && user.avg_views > 0 && (
-              <div className="border p-2 rounded">
-                <div className="text-gray-500">Avg Views</div>
-                <div className="font-semibold">
-                  {formatFollowersDetail(user.avg_views)}
-                </div>
-              </div>
-            )}
+
+            {user.avg_views !== undefined &&
+              user.avg_views > 0 && (
+                <InfoCard
+                  title="Avg Views"
+                  value={formatFollowers(user.avg_views)}
+                />
+              )}
+
             {user.engagements !== undefined && (
-              <div className="border p-2 rounded">
-                <div className="text-gray-500">Engagements</div>
-                <div className="font-semibold">
-                  {formatEngagementRate(user.engagement_rate)}
-                </div>
-              </div>
+              <InfoCard
+                title="Engagements"
+                value={user.engagements.toLocaleString()}
+              />
             )}
           </div>
 
@@ -142,22 +184,43 @@ export function ProfileDetailPage() {
             <a
               href={user.url}
               target="_blank"
-              className="inline-block mt-4 text-blue-600 text-sm"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 text-blue-600 transition-colors hover:text-blue-700 hover:underline"
             >
-              View on platform →
+              View on Platform
+              <ExternalLink size={16} />
             </a>
           )}
 
-          {/* TODO: candidates must implement Add to List feature */}
-          {/* TODO: candidates must implement Add to List feature */}
-          <button
-            disabled
-            className="block mt-4 px-4 py-2 bg-gray-300 text-gray-500 rounded cursor-not-allowed"
-          >
-            Add to List
-          </button>
+          <div className="mt-4">
+            <AddToListButton
+              username={user.username}
+            />
+          </div>
         </div>
       </div>
     </Layout>
+  );
+}
+
+interface InfoCardProps {
+  title: string;
+  value: string | number;
+}
+
+function InfoCard({
+  title,
+  value,
+}: InfoCardProps) {
+  return (
+    <div className="rounded-lg border p-3 shadow-sm">
+      <p className="text-sm text-gray-500">
+        {title}
+      </p>
+
+      <p className="mt-1 font-semibold">
+        {value}
+      </p>
+    </div>
   );
 }
