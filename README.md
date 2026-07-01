@@ -8,7 +8,7 @@ A starter influencer search application built with **React**, **TypeScript**, **
 
 ## Live Demo
 
-https://your-app.vercel.app
+https://influencersearchapp.netlify.app
 
 ## GitHub Repository
 
