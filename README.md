@@ -1,4 +1,4 @@
-ye pahle wala readme hai # Wobb Frontend Assignment
+# Wobb Frontend Assignment
 
 A starter influencer search application built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**. This project is intentionally left in a rough-but-working state for candidates to improve.
 
